@@ -1,7 +1,6 @@
 const express = require('express');
 const Partner = require('../models/partner');
 
-
 const partnerRouter = express.Router();
 
 partnerRouter.route('/')
@@ -50,7 +49,7 @@ partnerRouter.route('/:partnerId')
 })
 .post((req, res) => {
     res.statusCode = 403;
-    res.end(`POST operation not supported on /campsites/${req.params.partnerId}`);
+    res.end(`POST operation not supported on /partners/${req.params.partnerId}`);
 })
 .put((req, res, next) => {
     Partner.findByIdAndUpdate(req.params.partnerId, {

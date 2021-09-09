@@ -1,0 +1,16 @@
+Bonus Challenge #1: Create a controller for your Promotions model. You will have to hone your googleFu and figure out what the controller is and how to add one.
+You will create the controller file so that your partners route will look like this:
+//import your controller like any other module
+const promotionsController = require("../controllers/promotions");
+
+promotionRouter.route('/')
+.get(PromotionsController.getPromotions)
+.post(PromotionsController.createPromotion)
+.put(PromotionsController.updatePromotions)
+.delete(PromotionsController.deletePromotions);
+
+promotionRouter.route('/:promotionId')
+.get(PromotionsController.getPromotionById)
+.post(PromotionsController.createPromotionById)
+.put(PromotionsController.updatePromotionById)
+.delete(PromotionsController.deletePromotionById);
