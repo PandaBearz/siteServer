@@ -10,17 +10,17 @@ const authenticate = require('../authenticate');
 
 promotionRouter.route('/')
 .get(PromotionsController.getPromotions)
-.post(authenticate.verifyUser, PromotionsController.createPromotion)
+.post(authenticate.verifyUser, authenticate.verifyAdmin, PromotionsController.createPromotion)
 .put(authenticate.verifyUser, PromotionsController.updatePromotions)
-.delete(authenticate.verifyUser, PromotionsController.deletePromotions);
+.delete(authenticate.verifyUser, authenticate.verifyAdmin, PromotionsController.deletePromotions);
 
 // ?PROMOTIONS ROUTES FOR PROMOTIONS
 
 promotionRouter.route('/:promotionId')
 .get(PromotionsController.getPromotionById)
-.post(authenticate.verifyUser, PromotionsController.createPromotionById)
+.post(authenticate.verifyUser, authenticate.verifyAdmin, PromotionsController.createPromotionById)
 .put(authenticate.verifyUser, PromotionsController.updatePromotionById)
-.delete(authenticate.verifyUser, PromotionsController.deletePromotionById);
+.delete(authenticate.verifyUser, authenticate.verifyAdmin, PromotionsController.deletePromotionById);
 
 
 module.exports = promotionRouter;
