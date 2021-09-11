@@ -1,6 +1,5 @@
 const Promotion = require('../models/promotion');
 
-
 // ?PROMOTIONS CONTROLLER FOR PROMOTIONS
 
 const getPromotions = (req, res, next) => {
