@@ -4,12 +4,14 @@ var path = require('path');
 var logger = require('morgan');
 const passport = require('passport');
 const config = require('./config');
+const FacebookTokenStrategy = require('passport-facebook-token');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const campsiteRouter = require('./routes/campsiteRouter');
 const partnerRouter = require('./routes/partnerRouter');
 const promotionRouter = require('./routes/promotionRouter');
+const uploadRouter = require('./routes/uploadRouter');
 
 
 
@@ -60,6 +62,8 @@ app.use('/users', usersRouter);
 app.use('/campsites', campsiteRouter);
 app.use('/promotions', promotionRouter);
 app.use('/partners', partnerRouter);
+app.use('/imageUpload', uploadRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -77,5 +81,35 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+exports.facebookPassport = passport.use(
+  new FacebookTokenStrategy(
+      {
+          clientID: config.facebook.clientId,
+          clientSecret: config.facebook.clientSecret
+      }, 
+      (accessToken, refreshToken, profile, done) => {
+          User.findOne({facebookId: profile.id}, (err, user) => {
+              if (err) {
+                  return done(err, false);
+              }
+              if (!err && user) {
+                  return done(null, user);
+              } else {
+                  user = new User({ username: profile.displayName });
+                  user.facebookId = profile.id;
+                  user.firstname = profile.name.givenName;
+                  user.lastname = profile.name.familyName;
+                  user.save((err, user) => {
+                      if (err) {
+                          return done(err, false);
+                      } else {
+                          return done(null, user);
+                      }
+                  });
+              }
+          });
+      }
+  )
+);
 
 module.exports = app;
